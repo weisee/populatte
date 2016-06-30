@@ -1,10 +1,10 @@
 {
-  "name": "populate-service",
+  "name": "populatte",
   "version": "1.0.0",
   "description": "Service for populate object fields from any origins.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha -R spec test --recursive"
   },
   "keywords": [
     "service",
@@ -13,7 +13,7 @@
     "mongodb",
     "join"
   ],
-  "author": "wsmnsch",
+  "author": "weisee",
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.13.1"
