@@ -13,6 +13,5 @@ module.exports = {
             populators = options.populators
         })
     },
-    populate: function () {
-    }
+    make: populate,
 }
