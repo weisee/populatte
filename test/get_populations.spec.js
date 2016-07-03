@@ -96,13 +96,22 @@ describe('getPopulations fn', function () {
         ])
     })
 
-    it.only('return populations array with different levels', function () {
+    it('return populations array with different population levels', function () {
         var refs = {
             a: {origin: 'mongodb', collection: 'collection', key: '_id'},
             'a.b': {origin: 'mongodb', collection: 'collection', key: '_id'},
         }
 
-        assert.deepEqual(getPopulations(refs, 'a a.b'), [
+        assert.deepEqual(getPopulations(refs, 'a.b a'), [
+            {
+                path: 'a.b',
+                select: {},
+                key: '_id',
+                origin: 'mongodb',
+                collection: 'collection',
+                query: {},
+                level: 1,
+            },
             {
                 path: 'a',
                 select: {},
@@ -112,15 +121,6 @@ describe('getPopulations fn', function () {
                 query: {},
                 level: 0,
             },
-            {
-                path: 'a.b',
-                select: {},
-                key: '_id',
-                origin: 'mongodb',
-                collection: 'collection',
-                query: {},
-                level: 1,
-            }
         ])
     })
 

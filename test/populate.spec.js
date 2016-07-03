@@ -13,16 +13,25 @@ var collection = [
     {id: 4},
 ]
 
-before(function () {
-    populators['local'] = function (ids, projection, query, options) {
-        var ids = _.map(ids, Number)
-        var key = options.key || '_id'
+localPopulator.id = 'local'
+function localPopulator (ids, projection, query, options) {
+    var ids = _.map(ids, Number)
+    var key = options.key || '_id'
 
-        return Promise.resolve(_.filter(collection, function (doc) {
-            return !!~ids.indexOf(doc[key])
-        }))
-    }
-})
+    return Promise.resolve(_.filter(collection, function (doc) {
+        return !!~ids.indexOf(doc[key])
+    }))
+    .then(function (result) {
+        return _.keyBy(result, key)
+    })
+}
+
+var env = {
+    populators: {
+        local: localPopulator
+    },
+    options: {},
+}
 
 describe('populate fn', function () {
 
@@ -34,7 +43,7 @@ describe('populate fn', function () {
             a: 1,
         }
 
-        populate(refs, object, 'a', 'a.b')
+        populate(env, refs, object, 'a', 'a.b')
         .then(function (populatedObject) {
             assert.deepEqual(populatedObject, {
                 a: { id: 1 }
@@ -51,7 +60,7 @@ describe('populate fn', function () {
             {a: 1}, {a: 10}, {a: 1},
         ]
 
-        populate(refs, objects, 'a')
+        populate(env, refs, objects, 'a')
         .then(function (result) {
             assert.deepEqual(result, [
                 {a: { id: 1 }},
