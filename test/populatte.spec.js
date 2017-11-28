@@ -86,6 +86,34 @@ describe('populatte', function () {
         })
         .then(null, done)
     })
+
+    it('populatte 2 level field from mongodb', function (done) {
+        var refs = {
+            'special.parent': {collection: 'users'},
+        }
+        var doc = {
+            special: {
+                parent: userId
+            }
+        }
+        populatte.populate(refs, doc, 'special.parent')
+        .then(function (doc) {
+            assert.deepEqual(doc, {
+                special: {
+                    parent: {
+                        _id: userId,
+                        name: 'User',
+                        friends: [
+                            friendId
+                        ],
+                    }
+                }
+            })
+
+            done()
+        })
+        .then(null, done)
+    })
 })
 
 function addUser (attrs) {
